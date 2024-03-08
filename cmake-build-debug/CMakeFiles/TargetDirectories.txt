@@ -1,0 +1,3 @@
+/mnt/ssd/mqtt_moch_server/cmake-build-debug/CMakeFiles/mqtt_moch_server.dir
+/mnt/ssd/mqtt_moch_server/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/ssd/mqtt_moch_server/cmake-build-debug/CMakeFiles/rebuild_cache.dir
