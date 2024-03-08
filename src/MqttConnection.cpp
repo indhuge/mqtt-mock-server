@@ -21,7 +21,7 @@ void MqttConnection::dispatch() const noexcept {
 
 void MqttConnection::publish(std::string& topic, std::string& message) {
     std::stringstream ss;
-    ss << "mqtt publish " << getCommonArgs() ;
+    ss << "mqtt pub " << getCommonArgs() ;
     ss << " -t " << topic << " -m '" << message << "'";
     // std::cout << ss.str() << std::endl;
     exec(ss.str().c_str());
