@@ -4,13 +4,18 @@
 #include <thread>
 #include <sstream>
 #include <random>
+#include <nlohmann/json.hpp>
 
 std::string topic = "test/temperature";
 int temperature = 25;
+double pressure = 2.338;
+int rpm = 600;
 
 std::random_device rd;
 std::mt19937 mt(rd());
 std::uniform_int_distribution dist(-3, 3);
+std::uniform_real_distribution<double> d_pressure(-1, 1);
+
 
 /*
  *
@@ -57,11 +62,15 @@ int main() {
    auto mc = MqttConnection(host, std::stoi(port), tlsc);
 
     while(true) {
-        std::stringstream ms;
-        ms << temperature + dist(mt);
-        mc.publish(topic, (std::string &) std::move(ms.str()));
-        std::cout << topic<< " " << ms.str() << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        nlohmann::json j;
+        j["temperature"] = temperature + dist(mt);
+        j["pressure"] = pressure + d_pressure(mt);
+        j["rpm"] = rpm;
+
+        mc.publish(topic, to_string(j));
+        std::cout << topic<< " -> " << j << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 
 

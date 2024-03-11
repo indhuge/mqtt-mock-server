@@ -12,7 +12,7 @@ class MqttConnection {
 
 public:
     MqttConnection(const char* host, int port, TlsConfig& tlsConfig);
-    void publish(std::string& topic, std::string& message);
+    void publish(std::string topic, std::string message);
     void dispatch() const noexcept;
 
     static std::string exec(const char *command);
