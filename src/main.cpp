@@ -17,15 +17,6 @@ std::uniform_int_distribution dist(-3, 3);
 std::uniform_real_distribution<double> d_pressure(-1, 1);
 
 
-/*
- *
- *     tlsc.key_path = "/home/luan/Documents/aws/v3/private.pem.key";
-    tlsc.cert_path = "/home/luan/Documents/aws/v3/certificate.pem.crt";
-    tlsc.ca_path = "/home/luan/Documents/aws/v3/root-ca.pem";
-    auto mc = MqttConnection("awyqq01axmcj7-ats.iot.us-east-2.amazonaws.com", 8883, tlsc);
- *
- * */
-
 int main() {
 
     std::stringstream ss;
