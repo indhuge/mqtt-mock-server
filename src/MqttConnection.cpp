@@ -42,7 +42,10 @@ std::string MqttConnection::exec(const char *command) {
 
 std::string MqttConnection::getCommonArgs() {
     std::stringstream ss;
-    ss << " -h " << host << " -p " << port << " -s --cafile " << tlsConfig.ca_path << " --cert " << tlsConfig.cert_path << " --key " << tlsConfig.key_path << " -d";
+    ss << " -h " << host << " -p " << port;
+    if(tlsConfig)
+        ss << " -s --cafile " << tlsConfig.ca_path << " --cert " << tlsConfig.cert_path << " --key " << tlsConfig.key_path;
+    ss << " -d";
     return ss.str();
 }
 

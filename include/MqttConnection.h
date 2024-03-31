@@ -5,6 +5,11 @@ struct TlsConfig {
     const char* ca_path;
     const char* key_path;
     const char* cert_path;
+
+    operator bool() {
+        return ca_path == nullptr && key_path == nullptr && cert_path == nullptr;
+    } 
+
 };
 
 

@@ -6,7 +6,6 @@
 #include <random>
 #include <nlohmann/json.hpp>
 
-std::string topic = "test/temperature";
 int temperature = 25;
 double pressure = 2.338;
 int rpm = 600;
@@ -17,7 +16,10 @@ std::uniform_int_distribution dist(-3, 3);
 std::uniform_real_distribution<double> d_pressure(-1, 1);
 
 
-int main() {
+int main(int args_c, const char** args) {
+
+    const bool isLocal = std::strcmp(args[1], "local") == 0;
+    std::cout << "Using mode: " << (isLocal ? "Local" : "AWS")  << std::endl;
 
     std::stringstream ss;
 
@@ -34,20 +36,42 @@ int main() {
     std::cout << ss.str() << std::endl;
 
     TlsConfig tlsc;
-    tlsc.key_path = std::getenv("MQTT_KEY_PATH");
-    tlsc.cert_path = std::getenv("MQTT_CERT_PATH");
-    tlsc.ca_path = std::getenv("MQTT_CA_PATH");
+    if(!isLocal)
+    {
+        tlsc.key_path = std::getenv("MQTT_KEY_PATH");
+        tlsc.cert_path = std::getenv("MQTT_CERT_PATH");
+        tlsc.ca_path = std::getenv("MQTT_CA_PATH");
+    }
 
-    const char* host = std::getenv("MQTT_HOST");
-    const char* port = std::getenv("MQTT_PORT");
+    const char* host = isLocal ? "localhost" : std::getenv("MQTT_HOST");
+    const char* port = isLocal ? "1883" : std::getenv("MQTT_PORT");
+
+    std::string deviceId;
+    std::string type;
+    std::string topic;
+
 
     {
         using namespace std;
+        if(!isLocal)
+        {
+
         cout << "MQTT_KEY_PATH = " << tlsc.key_path << endl;
         cout << "MQTT_CERT_PATH = " << tlsc.cert_path << endl;
         cout << "MQTT_CA_PATH = " << tlsc.ca_path << endl;
         cout << "MQTT_HOST = " << host << endl;
         cout << "MQTT_PORT = " << port << endl;
+        }
+
+        cout << "Enter the deviceId:";
+        cin >> deviceId;
+        cout << "Enter the type:";
+        cin >> type;
+        cout << "Enter the topic";
+        cin >> topic;
+        if(topic.size() == 0)
+            topic = "nest/test";
+        
     }
 
    auto mc = MqttConnection(host, std::stoi(port), tlsc);
@@ -58,9 +82,11 @@ int main() {
         j["temperature"] = temperature + dist(mt);
         j["pressure"] = pressure + d_pressure(mt);
         j["rpm"] = rpm;
+        j["type"] = type;
+        j["device_id"] = deviceId;
 
         mc.publish(topic, to_string(j));
-        std::cout << topic<< " -> " << j << std::endl;
+        std::cout << topic << " -> " << j << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 
