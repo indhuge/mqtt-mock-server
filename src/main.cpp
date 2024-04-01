@@ -67,10 +67,13 @@ int main(int args_c, const char** args) {
         cin >> deviceId;
         cout << "Enter the type:";
         cin >> type;
-        cout << "Enter the topic";
+        cout << "Enter the topic: ";
         cin >> topic;
-        if(topic.size() == 0)
+        if(topic == "_")
+        {
             topic = "nest/test";
+            cout << "Using: " + topic << endl;
+        }
         
     }
 
