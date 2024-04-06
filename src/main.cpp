@@ -6,17 +6,20 @@
 #include <random>
 #include <nlohmann/json.hpp>
 
+#include <DeviceDescriptor.h>
+
 int temperature = 25;
 double pressure = 2.338;
 int rpm = 600;
 
 std::random_device rd;
 std::mt19937 mt(rd());
-std::uniform_int_distribution dist(-3, 3);
-std::uniform_real_distribution<double> d_pressure(-1, 1);
+std::uniform_int_distribution dist(-30, 30);
+std::uniform_real_distribution<double> d_pressure(-10, 10);
+std::uniform_int_distribution d_rpm(-50, 50);
 
 
-int main(int args_c, const char** args) {
+int _main(int args_c, const char** args) {
 
     const bool isLocal = std::strcmp(args[1], "local") == 0;
     std::cout << "Using mode: " << (isLocal ? "Local" : "AWS")  << std::endl;
@@ -84,7 +87,7 @@ int main(int args_c, const char** args) {
         nlohmann::json j;
         j["temperature"] = temperature + dist(mt);
         j["pressure"] = pressure + d_pressure(mt);
-        j["rpm"] = rpm;
+        j["rpm"] = rpm + d_rpm(mt);
         j["type"] = type;
         j["device_id"] = deviceId;
 
@@ -95,4 +98,8 @@ int main(int args_c, const char** args) {
 
 
     return 0;
+}
+
+int main() {
+    std::vector<DeviceDescriptor *> d = DeviceDescriptor::from("/home/luan/Documents/mqtt-mock-server/exemple.conf");
 }
