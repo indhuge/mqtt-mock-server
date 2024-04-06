@@ -24,21 +24,21 @@ void MqttConnection::publish(std::string topic, std::string message) {
     ss << "mqtt pub " << getCommonArgs() ;
     ss << " -t " << topic << " -m '" << message << "'";
     std::cout << ss.str() << std::endl;
-    exec(ss.str().c_str());
+    system(ss.str().c_str());
 }
 
-std::string MqttConnection::exec(const char *command) {
-    std::array<char, 128> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command, "r"), pclose);
-    if(!pipe) {
-        throw std::runtime_error("popen() failed");
-    }
-    while(fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-        result += buffer.data();
-    }
-    return result;
-}
+//std::string MqttConnection::exec(const char *command) {
+//    std::array<char, 128> buffer;
+//    std::string result;
+//    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command, "r"), pclose);
+//    if(!pipe) {
+//        throw std::runtime_error("popen() failed");
+//    }
+//    while(fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+//        result += buffer.data();
+//    }
+//    return result;
+//}
 
 std::string MqttConnection::getCommonArgs() {
     std::stringstream ss;
