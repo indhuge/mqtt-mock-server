@@ -10,6 +10,7 @@ struct ConnectionConfig {
 };
 
 class DeviceDescriptor {
+    friend class Device;
 public:
     DeviceDescriptor() = default;
     DeviceDescriptor(std::string deviceId, std::string topic, TlsConfig tlsConfig);

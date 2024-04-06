@@ -101,5 +101,6 @@ int _main(int args_c, const char** args) {
 }
 
 int main() {
-    std::vector<DeviceDescriptor *> d = DeviceDescriptor::from("/home/luan/Documents/mqtt-mock-server/exemple.conf");
+    std::vector<DeviceDescriptor*> d = DeviceDescriptor::from("/home/luan/Documents/mqtt-mock-server/exemple.conf");
+    for(auto x : d) delete x;
 }
