@@ -8,7 +8,7 @@ DeviceDescriptor::DeviceDescriptor(std::string deviceId, std::string topic, TlsC
 device_id(deviceId), topic(topic), tlsConfig(tlsConfig)
 {}
 
-DeviceDescriptor* DeviceDescriptor::from(std::unordered_map<std::string, std::string> map) {
+std::unique_ptr<DeviceDescriptor> DeviceDescriptor::from(std::unordered_map<std::string, std::string> map) {
     auto pDD = new DeviceDescriptor();
     for(const auto& x : map){
         if(x.first == "device_id")
@@ -31,10 +31,10 @@ DeviceDescriptor* DeviceDescriptor::from(std::unordered_map<std::string, std::st
 
         }
     }
-    return pDD;
+    return std::make_unique(pDD);
 }
 
-std::vector<DeviceDescriptor*> DeviceDescriptor::from(const char *filePath) {
+std::vector<std::unique_ptr<DeviceDescriptor>> DeviceDescriptor::from(const char *filePath) {
     std::ifstream file(filePath);
     if(!file.is_open()) return {};
     std::vector<std::unordered_map<std::string, std::string>> dds_props;
@@ -51,7 +51,7 @@ std::vector<DeviceDescriptor*> DeviceDescriptor::from(const char *filePath) {
         dds_props[i].insert(std::make_pair(prop[0], prop[1]));
     }
 
-    std::vector<DeviceDescriptor*> result;
+    std::vector<std::unique_ptr<DeviceDescriptor>> result;
     for (const auto& x : dds_props) {
         result.push_back(from(x));
     }
@@ -74,5 +74,10 @@ std::vector<std::string> DeviceDescriptor::split(std::string s, std::string deli
     }
     result.push_back(s);
     return result;
+}
+
+std::string DeviceDescriptor::getDeviceId() const
+{
+    return device_id;
 }
 

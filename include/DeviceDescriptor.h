@@ -14,9 +14,12 @@ class DeviceDescriptor {
 public:
     DeviceDescriptor() = default;
     DeviceDescriptor(std::string deviceId, std::string topic, TlsConfig tlsConfig);
-    static std::vector<DeviceDescriptor*> from(const char* filePath);
-    static DeviceDescriptor* from(std::unordered_map<std::string, std::string> map);
+    static std::vector<std::unique_ptr<DeviceDescriptor>> from(const char* filePath);
+    static std::unique_ptr<DeviceDescriptor> from(std::unordered_map<std::string, std::string> map);
     static std::vector<std::string> split(std::string, std::string delimiter);
+
+    std::string getDeviceId() const;
+
 
 private:
     std::string device_id;

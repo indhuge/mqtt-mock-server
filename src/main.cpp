@@ -5,7 +5,6 @@
 #include <sstream>
 #include <random>
 #include <nlohmann/json.hpp>
-
 #include <DeviceDescriptor.h>
 
 int temperature = 25;
@@ -96,11 +95,13 @@ int _main(int args_c, const char** args) {
         std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 
-
+    
     return 0;
 }
 
 int main() {
-    std::vector<DeviceDescriptor*> d = DeviceDescriptor::from("/home/luan/Documents/mqtt-mock-server/exemple.conf");
-    for(auto x : d) delete x;
+    std::vector<std::unique_ptr<DeviceDescriptor>> d = DeviceDescriptor::from("C:\\Users\\Luan\\Source\\Repos\\mqtt-mock-server\\exemple.conf");
+    for(auto& x : d) 
+        std::cout << x->getDeviceId() << std::endl;
+    for(auto& x : d) x.release() ;
 }
