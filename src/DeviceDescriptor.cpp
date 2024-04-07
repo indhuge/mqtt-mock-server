@@ -15,6 +15,8 @@ std::unique_ptr<DeviceDescriptor> DeviceDescriptor::from(std::unordered_map<std:
             pDD->device_id = x.second;
         else if(x.first == "topic")
             pDD->topic = x.second;
+        else if(x.first == "type")
+            pDD->type = x.second;
         else if(x.first == "mode") {
             if(x.second == "aws") {
                 pDD->tlsConfig.key_path = std::getenv("MQTT_KEY_PATH");
