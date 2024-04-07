@@ -1,3 +1,5 @@
+#pragma once
+
 #include <MqttConnection.h>
 #include <fstream>
 #include <string>
@@ -23,6 +25,7 @@ public:
 
 private:
     std::string device_id;
+    std::string type;
     std::string topic;
     TlsConfig tlsConfig{};
     ConnectionConfig connectionConfig {};
