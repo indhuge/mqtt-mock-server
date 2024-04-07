@@ -20,8 +20,6 @@ public:
     void publish(std::string topic, std::string message);
     void dispatch() const noexcept;
 
-    static std::string exec(const char *command);
-
 private:
     std::string getCommonArgs();
     std::string host;

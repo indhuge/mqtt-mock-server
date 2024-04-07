@@ -31,7 +31,7 @@ std::unique_ptr<DeviceDescriptor> DeviceDescriptor::from(std::unordered_map<std:
 
         }
     }
-    return std::make_unique(pDD);
+    return std::make_unique<DeviceDescriptor>(*pDD);
 }
 
 std::vector<std::unique_ptr<DeviceDescriptor>> DeviceDescriptor::from(const char *filePath) {
