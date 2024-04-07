@@ -19,8 +19,13 @@ void Device::generateMessage() {
     j["type"] = descriptor.type;
     j["device_id"] = descriptor.device_id;
 
-    // mqttConnection.publish(descriptor.topic, to_string(j));
-    std::cout << descriptor.topic << " -> " << j << std::endl;
+    mqttConnection.publish(descriptor.topic, to_string(j));
+    //std::cout << descriptor.topic << " -> " << j << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(2));
+}
+
+void Device::execute() {
+    std::cout << descriptor.device_id << " published" << std::endl;
+    generateMessage();
 }
 

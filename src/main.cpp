@@ -8,6 +8,7 @@
 #include <DeviceDescriptor.h>
 #include <MetricGenerator.h>
 #include "Device.h"
+#include <ThreadController.h>
 
 int temperature = 25;
 double pressure = 2.338;
@@ -109,11 +110,24 @@ int main() {
     std::cout << pMg->generateRpm() << std::endl;
     std::cout << pMg->generateTemperature() << std::endl;
 
+    ThreadDescriptor td = {};
+    td.interval = std::chrono::seconds(2);
     std::vector<Device> devices;
+    std::vector<ThreadController> tcs;
+
     for(auto& x : d) {
         devices.emplace_back(*x, pMg);
     }
+
     for(auto& x : devices) {
-        x.generateMessage();
+        tcs.emplace_back(std::make_unique<Device>(x), td);
     }
+
+    for(auto& x : tcs) {
+        x.start();
+    }
+    if(!tcs.empty())
+        tcs[0].join();
+
+    return 0;
 }
