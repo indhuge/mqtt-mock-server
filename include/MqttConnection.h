@@ -6,8 +6,8 @@ struct TlsConfig {
     const char* key_path;
     const char* cert_path;
 
-    operator bool() {
-        return ca_path == nullptr && key_path == nullptr && cert_path == nullptr;
+    operator bool() const noexcept {
+        return !(ca_path == nullptr && key_path == nullptr && cert_path == nullptr);
     } 
 
 };
@@ -25,8 +25,6 @@ private:
     std::string host;
     int port;
     TlsConfig tlsConfig;
-
-
 };
 
 

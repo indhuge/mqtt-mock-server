@@ -24,7 +24,7 @@ void MqttConnection::publish(std::string topic, std::string message) {
     ss << "mqtt pub " << getCommonArgs() ;
     ss << " -t " << topic << " -m '" << message << "'";
     std::cout << ss.str() << std::endl;
-    system(ss.str().c_str());
+    system((ss.str() + " > /dev/null").c_str());
 }
 
 //std::string MqttConnection::exec(const char *command) {
@@ -43,7 +43,7 @@ void MqttConnection::publish(std::string topic, std::string message) {
 std::string MqttConnection::getCommonArgs() {
     std::stringstream ss;
     ss << " -h " << host << " -p " << port;
-    if(tlsConfig)
+    if(tlsConfig.operator bool())
         ss << " -s --cafile " << tlsConfig.ca_path << " --cert " << tlsConfig.cert_path << " --key " << tlsConfig.key_path;
     ss << " -d";
     return ss.str();
