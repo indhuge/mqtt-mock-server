@@ -6,6 +6,7 @@
 #include <random>
 #include <nlohmann/json.hpp>
 #include <DeviceDescriptor.h>
+#include <MetricGenerator.h>
 
 int temperature = 25;
 double pressure = 2.338;
@@ -100,8 +101,14 @@ int _main(int args_c, const char** args) {
 }
 
 int main() {
-    std::vector<std::unique_ptr<DeviceDescriptor>> d = DeviceDescriptor::from("C:\\Users\\Luan\\Source\\Repos\\mqtt-mock-server\\exemple.conf");
+    std::vector<std::unique_ptr<DeviceDescriptor>> d = DeviceDescriptor::from("/home/luan/Documents/mqtt-mock-server/exemple.conf");
     for(auto& x : d) 
         std::cout << x->getDeviceId() << std::endl;
     for(auto& x : d) x.release() ;
+
+    auto pMg = std::make_shared<MetricGenerator>();
+    std::cout << pMg->generatePressure() << std::endl;
+    std::cout << pMg->generateRpm() << std::endl;
+    std::cout << pMg->generateTemperature() << std::endl;
+
 }
